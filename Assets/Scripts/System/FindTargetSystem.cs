@@ -1,6 +1,7 @@
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Transforms;
 
@@ -32,25 +33,56 @@ partial struct FindTargetSystem : ISystem
                 CollidesWith = findTarget.ValueRO.targetLayer,
                 GroupIndex = 0,
             };
-
-            // To do : 추후 로켓 런처의 min 사거리 제한이 들어가면 로직 수정 필요 예상 
-            if (collisionWorld.OverlapSphere(localTransform.ValueRO.Position, findTarget.ValueRO.maxDistance, ref distanceHitList, collisionFilter))
+            
+            Entity targetEntity = Entity.Null;
+            
+            // 타겟이 존재하고 해당 타겟이 내 범위 안에 있을 경우 해당 타겟을 우선시 한다.
+            if (checkFocusTargetValid(ref state, localTransform.ValueRO, target.ValueRO.targetEntity, findTarget.ValueRO.maxDistance))
             {
-                foreach (DistanceHit hit in distanceHitList)
+                continue;
+            }
+            // 만약 타겟이 존재하지 않고, 기존 타겟이 범위 밖이라면 새로운 적을 타겟팅 한다.
+            else 
+            {
+                // To do : 추후 로켓 런처의 min 사거리 제한이 들어가면 로직 수정 필요 예상 
+                if (collisionWorld.OverlapSphere(localTransform.ValueRO.Position, findTarget.ValueRO.maxDistance, ref distanceHitList, collisionFilter))
                 {
-                    if (SystemAPI.Exists(hit.Entity) == false || SystemAPI.HasComponent<Unit>(hit.Entity) == false)
+                    foreach (DistanceHit hit in distanceHitList)
                     {
-                        continue;
-                    }
+                        if (SystemAPI.Exists(hit.Entity) == false || SystemAPI.HasComponent<Unit>(hit.Entity) == false)
+                        {
+                            continue;
+                        }
 
-                    Unit targetUnit = SystemAPI.GetComponent<Unit>(hit.Entity);
-                    if (targetUnit.UnitType == findTarget.ValueRO.targettingUnitType)
-                    {
-                        target.ValueRW.targetEntity = hit.Entity;
-                        break;
+                        Unit targetUnit = SystemAPI.GetComponent<Unit>(hit.Entity);
+                        if (targetUnit.UnitType == findTarget.ValueRO.targettingUnitType)
+                        {
+                            targetEntity = hit.Entity;
+                            UnityEngine.Debug.Log("new target setted");
+                            break;
+                        }
                     }
                 }
+
+                target.ValueRW.targetEntity = targetEntity;
             }
         }
+    }
+
+    bool checkFocusTargetValid(ref SystemState state,LocalTransform finderLocalTransform, Entity targetEntity, float maxDistance)
+    {
+        if (targetEntity == Entity.Null || SystemAPI.Exists(targetEntity) == false)
+        {
+            return false;
+        }
+
+        if (SystemAPI.HasComponent<LocalTransform>(targetEntity) == false)
+        {
+            return false;
+        }
+
+        LocalTransform targetLocalTransform = SystemAPI.GetComponent<LocalTransform>(targetEntity);
+        
+        return math.distancesq(targetLocalTransform.Position, finderLocalTransform.Position) <= maxDistance * maxDistance;
     }
 }
