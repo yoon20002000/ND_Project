@@ -11,7 +11,8 @@ public class GridSpawnerAuthoring : MonoBehaviour
    public int height = 10;
    public float cellSize = 1f;
    public float gridCellFactor = 0.9f;
-   private class GridBaker : Baker<GridSpawnerAuthoring>
+
+   private class Baker : Baker<GridSpawnerAuthoring>
    {
       public override void Bake(GridSpawnerAuthoring spawnerAuthoring)
       {
