@@ -1,7 +1,4 @@
 using Unity.Entities;
-using Unity.Mathematics;
-using Unity.Rendering;
-using Unity.Transforms;
 using UnityEngine;
 
 public class GridSpawnerAuthoring : MonoBehaviour
@@ -9,7 +6,7 @@ public class GridSpawnerAuthoring : MonoBehaviour
    public GameObject gridCellPrefab;
    public float cellSize = 1f;
    public float gridCellFactor = 0.9f;
-
+   
    private class Baker : Baker<GridSpawnerAuthoring>
    {
       public override void Bake(GridSpawnerAuthoring spawnerAuthoring)

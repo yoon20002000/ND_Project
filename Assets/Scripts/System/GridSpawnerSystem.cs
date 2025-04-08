@@ -70,5 +70,6 @@ partial struct GridSpawnerSystem : ISystem
         
         ecb.Playback(state.EntityManager);
         ecb.Dispose();
+        state.Enabled = false;
     }
 }

@@ -2,8 +2,6 @@ using Unity.Assertions;
 using Unity.Entities;
 using UnityEngine;
 
-[UpdateInGroup(typeof(InitializationSystemGroup))]
-[UpdateBefore(typeof(GridSpawnerSystem))]
 public class StageLoaderAuthoring : MonoBehaviour
 {
     public string fileName;
