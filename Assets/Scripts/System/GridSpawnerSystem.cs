@@ -1,3 +1,4 @@
+using System;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
@@ -8,6 +9,13 @@ using Unity.Transforms;
 [UpdateInGroup(typeof(InitializationSystemGroup))]
 partial struct GridSpawnerSystem : ISystem
 {
+    public enum EGridType
+    {
+        Moveable = 0,
+        Blocked = 1,
+        Placeable = 2,
+    }
+    
     [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
@@ -18,34 +26,48 @@ partial struct GridSpawnerSystem : ISystem
     public void OnUpdate(ref SystemState state)
     {
         EntityCommandBuffer ecb = new EntityCommandBuffer(Allocator.Temp);
-        foreach ((RefRO<GridSpawner> gridSpawner, Entity entity) in SystemAPI.Query<RefRO<GridSpawner>>().WithEntityAccess())
+
+        GridSpawner gridSpawner = SystemAPI.GetSingleton<GridSpawner>();
+        Entity gridCellEntity = gridSpawner.CellPrefab;
+        foreach ((RefRO<StageLoader> stageLoader, DynamicBuffer<StageMapBuffer> stageMapBuffers, Entity entity) in SystemAPI.Query<RefRO<StageLoader>,DynamicBuffer<StageMapBuffer>>().WithEntityAccess())
         {
-            GridSpawner spawner = gridSpawner.ValueRO;
-            for (int x = 0; x < spawner.Width; ++x)
+            int width = stageLoader.ValueRO.Width;
+            int height = stageLoader.ValueRO.Height;
+            NativeArray<StageMapBuffer> map = stageMapBuffers.AsNativeArray();
+            
+            for (int x = 0; x < width; ++x)
             {
-                for (int z = 0; z < spawner.Height; ++z)
+                for (int z = 0; z < height; ++z)
                 {
-                    Entity instanceEntity = ecb.Instantiate(spawner.CellPrefab);
-                    float3 worldPos = new float3(x * spawner.CellSize, 0, z * spawner.CellSize);
+                    int flippedZ = (height - 1) - z; 
+                    int index = flippedZ * width + x;
+                    int cellType = map[index].StageType;
+                    
+                    Entity instanceEntity = ecb.Instantiate(gridCellEntity);
+                    
+                    float3 worldPos = new float3(x * gridSpawner.CellSize, 0, z * gridSpawner.CellSize);
                     ecb.SetComponent(instanceEntity, new LocalTransform()
                     {
                         Position = worldPos,
                         Rotation = quaternion.identity,
-                        Scale = spawner.CellSize * spawner.GridCellFactor
+                        Scale = gridSpawner.CellSize * gridSpawner.GridCellFactor
                     });
-                    
+        
                     ecb.SetComponent(instanceEntity, new GridCell()
                     {
                         GridPosition = new int2(x, z),
                         WorldPosition = worldPos,
-                        IsWalkable = true,
-                        CanBuild = false,
+                        IsWalkable = cellType == (int)EGridType.Moveable,
+                        CanBuild = cellType == (int)EGridType.Placeable,
                         HasTower = false,
                     });
                 }
             }
             ecb.DestroyEntity(entity);
         }
+        Entity gridSpawnerEntity = SystemAPI.GetSingletonEntity<GridSpawner>();
+        ecb.DestroyEntity(gridSpawnerEntity);
+        
         ecb.Playback(state.EntityManager);
         ecb.Dispose();
     }

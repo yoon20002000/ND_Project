@@ -7,8 +7,6 @@ using UnityEngine;
 public class GridSpawnerAuthoring : MonoBehaviour
 {
    public GameObject gridCellPrefab;
-   public int width = 10;
-   public int height = 10;
    public float cellSize = 1f;
    public float gridCellFactor = 0.9f;
 
@@ -20,8 +18,6 @@ public class GridSpawnerAuthoring : MonoBehaviour
          AddComponent(entity, new GridSpawner
          {
             CellPrefab = GetEntity(spawnerAuthoring.gridCellPrefab, TransformUsageFlags.Renderable),
-            Width = spawnerAuthoring.width,
-            Height = spawnerAuthoring.height,
             CellSize = spawnerAuthoring.cellSize,
             GridCellFactor = spawnerAuthoring.gridCellFactor,
          });
@@ -32,8 +28,6 @@ public class GridSpawnerAuthoring : MonoBehaviour
 public struct GridSpawner : IComponentData
 {
    public Entity CellPrefab;
-   public int Width;
-   public int Height;
    public float CellSize;
    public float GridCellFactor;
 }
