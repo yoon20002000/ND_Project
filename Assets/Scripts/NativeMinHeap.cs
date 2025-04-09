@@ -1,7 +1,5 @@
 using Unity.Collections;
 using Unity.Jobs;
-using Unity.Mathematics;
-using UnityEngine;
 
 public class NativeMinHeap : INativeDisposable
 {
@@ -100,16 +98,5 @@ public class NativeMinHeap : INativeDisposable
         Node temp = heap[a];
         heap[a] = heap[b];
         heap[b] = temp;
-    }
-}
-
-public struct Node
-{
-    public int2 Position;
-    public int FScore;
-
-    public int CompareTo(Node other)
-    {
-        return FScore.CompareTo(other.FScore);
     }
 }
