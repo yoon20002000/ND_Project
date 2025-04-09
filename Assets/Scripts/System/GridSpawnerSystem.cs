@@ -35,9 +35,9 @@ partial struct GridSpawnerSystem : ISystem
             int height = stageLoader.ValueRO.Height;
             NativeArray<StageMapBuffer> map = stageMapBuffers.AsNativeArray();
             
-            for (int x = 0; x < width; ++x)
+            for (int z = 0; z < height; ++z)
             {
-                for (int z = 0; z < height; ++z)
+                for (int x = 0; x < width; ++x)
                 {
                     int flippedZ = (height - 1) - z; 
                     int index = flippedZ * width + x;
@@ -63,7 +63,6 @@ partial struct GridSpawnerSystem : ISystem
                     });
                 }
             }
-            ecb.DestroyEntity(entity);
         }
         Entity gridSpawnerEntity = SystemAPI.GetSingletonEntity<GridSpawner>();
         ecb.DestroyEntity(gridSpawnerEntity);
