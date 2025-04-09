@@ -47,6 +47,7 @@ partial struct PathFindingSystem : ISystem
         
         ecb.Playback(state.EntityManager);
         ecb.Dispose();
+        state.Enabled = false;
     }
 
     private NativeList<int2> FindPath(int2 start, int2 end, int width, int height, NativeArray<GridCell> grid)
