@@ -47,6 +47,7 @@ partial struct PathFindingSystem : ISystem
         
         ecb.Playback(state.EntityManager);
         ecb.Dispose();
+        // 만약 적군 이동 경로를 막는 스킬을 넣게 되면 경로 계산이 매번 달라지게 하거나, 아니면 그냥 벽 비비게 해야 됨.
         state.Enabled = false;
     }
 
