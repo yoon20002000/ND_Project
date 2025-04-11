@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 public class SpawnerAuthoring : MonoBehaviour
 {
     public float spawnPeriod = 1.0f;
-    [FormerlySerializedAs("spawnTime")] public float spawnLimitTime = 5;
+    public float spawnLimitTime = 5;
     public int spawnCount = 0;
     public GameObject spawnPrefab;
     private class Baker : Baker<SpawnerAuthoring>
