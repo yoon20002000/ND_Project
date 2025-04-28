@@ -28,8 +28,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 3338215106919745043}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 3338215106919745043}
   - component: {fileID: 1398751908868346446}
   - component: {fileID: 8347684152896050484}
+  - component: {fileID: 7579640758914063675}
   m_Layer: 6
   m_Name: Rapture
   m_TagString: Untagged
@@ -152,5 +153,18 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 0.6, y: 0.6, z: 0.6}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7579640758914063675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3087449349777590424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 659d6ae111e7a36438aeb2205d41a671, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 1

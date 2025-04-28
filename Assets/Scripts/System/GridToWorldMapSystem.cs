@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -24,7 +24,7 @@ public partial struct GridToWorldMapSystem : ISystem
 
     public void OnUpdate(ref SystemState state)
     {
-        if (GridToWorldMap.Any())
+        if (GridToWorldMap.Count > 0)
         {
             return; // 이미 생성됨
         }
@@ -40,4 +40,12 @@ public partial struct GridToWorldMapSystem : ISystem
     }
 
     public NativeHashMap<int2, float3> GetMap() => GridToWorldMap;
+    public float3 GetWorldPosition(int2 xy)
+    {
+        float3 worldPos = float3.zero;
+
+        TryGetWorldPos(xy, out worldPos);
+
+        return worldPos;
+    }
 }
