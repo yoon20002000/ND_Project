@@ -41,11 +41,10 @@ partial struct SpawnerSystem : ISystem
 
             Entity instantiateEntity = ecb.Instantiate(spawner.ValueRO.SpawnEntity);
 
-            int2 spawnGrid = spawnGrid = pathBuffer[0].Position; ;
+            int2 spawnGrid = pathBuffer[0].Position;
 
             float3 spawnPosition = gridMapSystem.GetWorldPosition(spawnGrid);
 
-            
             ecb.SetComponent(instantiateEntity, new LocalTransform()
             {
                 Position = spawnPosition,
@@ -60,6 +59,7 @@ partial struct SpawnerSystem : ISystem
             }
 
             ecb.SetComponentEnabled<MovePathAlong>(instantiateEntity, true);
+            ecb.SetComponentEnabled<GoalReachedEventData>(instantiateEntity, false);
 
             ++spawner.ValueRW.SpawnCurCount;
         }

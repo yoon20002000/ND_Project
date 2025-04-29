@@ -1,4 +1,4 @@
-using Unity.Burst;
+﻿using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -29,9 +29,9 @@ partial struct MovePathAlongSystem : ISystem
         }
         
         foreach ((RefRW<MovePathAlong> movePathAlong, EnabledRefRW<MovePathAlong> enabledMovePathAlong,
-                     RefRW<LocalTransform> localTransform, DynamicBuffer<PathPosition> pathPositions, Entity entity)
-                 in SystemAPI.Query<RefRW<MovePathAlong>, EnabledRefRW<MovePathAlong>, RefRW<LocalTransform>,
-                         DynamicBuffer<PathPosition>>().WithEntityAccess())
+                     RefRW<LocalTransform> localTransform, EnabledRefRW<GoalReachedEventData> enabledGoal, DynamicBuffer <PathPosition> pathPositions, Entity entity)
+                 in SystemAPI.Query<RefRW<MovePathAlong>, EnabledRefRW<MovePathAlong>, RefRW<LocalTransform>, EnabledRefRW<GoalReachedEventData>,
+                         DynamicBuffer <PathPosition>>().WithDisabled<GoalReachedEventData>().WithEntityAccess())
         {
             if (enabledMovePathAlong.ValueRO == false)
             {
@@ -40,7 +40,9 @@ partial struct MovePathAlongSystem : ISystem
 
             if (movePathAlong.ValueRO.CurrentIndex >= pathPositions.Length)
             {
+                enabledGoal.ValueRW = true;
                 enabledMovePathAlong.ValueRW = false;
+                
                 continue;
             }
             int currentIndex = movePathAlong.ValueRO.CurrentIndex;

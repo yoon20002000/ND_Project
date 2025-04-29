@@ -1,28 +1,34 @@
-using Unity.Entities;
+﻿using Unity.Entities;
 using UnityEngine;
 
 public class MovePathAlongAuthoring : MonoBehaviour
 {
-   public float moveSpeed = 1f;
-   private class Baker : Baker<MovePathAlongAuthoring>
-   {
-      public override void Bake(MovePathAlongAuthoring authoring)
-      {
-         Entity entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
-         AddComponent(entity, new MovePathAlong
-         {
-            MoveSpeed = authoring.moveSpeed,
-         });
+    public float moveSpeed = 1f;
+    public float damageToGoal = 1;
+    private class Baker : Baker<MovePathAlongAuthoring>
+    {
+        public override void Bake(MovePathAlongAuthoring authoring)
+        {
+            Entity entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
+            AddComponent(entity, new MovePathAlong
+            {
+                MoveSpeed = authoring.moveSpeed,
+            });
 
-         AddBuffer<PathPosition>(entity);
+            AddComponent(entity, new GoalReachedEventData
+            {
+                DamageToGoal = authoring.damageToGoal
+            });
 
-         SetComponentEnabled<MovePathAlong>(entity, false);
-      }
-   }
+            AddBuffer<PathPosition>(entity);
+
+            SetComponentEnabled<MovePathAlong>(entity, false);
+        }
+    }
 }
 
 public struct MovePathAlong : IComponentData, IEnableableComponent
 {
-   public float MoveSpeed;
-   public int CurrentIndex;
+    public float MoveSpeed;
+    public int CurrentIndex;
 }
