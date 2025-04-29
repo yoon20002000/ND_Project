@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using Unity.Assertions;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
@@ -32,6 +32,8 @@ partial struct PathFindingSystem : ISystem
             NativeArray<GridCell> gridCells = gridCellQuery.ToComponentDataArray<GridCell>(Allocator.Temp);
 
             NativeList<int2> path = FindPath(start, end, width, height, gridCells);
+
+            Assert.IsTrue(path.Length > 0, "Path Erroe Check Stage.txt");
             
             DynamicBuffer<PathPosition> buffer = ecb.AddBuffer<PathPosition>(entity);
             
