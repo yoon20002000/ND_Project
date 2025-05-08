@@ -64,7 +64,7 @@ public class GridSelectManager : MonoBehaviour
                 if (entityManager.HasComponent<GridCell>(raycastHit.Entity) && entityManager.HasComponent<Selected>(raycastHit.Entity))
                 {
                     GridCell gridCell = entityManager.GetComponentData<GridCell>(raycastHit.Entity);
-                    if (gridCell.CanBuild)
+                    if (gridCell.CanBuild && !gridCell.HasTower)
                     {
                         Selected selected = entityManager.GetComponentData<Selected>(raycastHit.Entity);
                         selected.onSelected = true;
@@ -82,7 +82,7 @@ public class GridSelectManager : MonoBehaviour
                             Scale = 1f
                         });
 
-                        gridCell.CanBuild = false;
+                        gridCell.HasTower = true;
                         entityManager.SetComponentData<GridCell>(raycastHit.Entity, gridCell);
                     }
                 }
