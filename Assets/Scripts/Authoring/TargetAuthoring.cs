@@ -15,8 +15,9 @@ public class TargetAuthoring : MonoBehaviour
       }
    }
 }
+// IBufferElementData를 이용해서 여러 Target 저장 할 수 있어야 됨
 
 public struct Target : IComponentData
 {
-   public Entity targetEntity; // Array로 변경 필요
+   public Entity targetEntity;
 }

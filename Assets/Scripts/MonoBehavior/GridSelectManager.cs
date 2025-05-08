@@ -1,6 +1,8 @@
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Mathematics;
 using Unity.Physics;
+using Unity.Transforms;
 using UnityEngine;
 
 public class GridSelectManager : MonoBehaviour
@@ -68,6 +70,20 @@ public class GridSelectManager : MonoBehaviour
                         selected.onSelected = true;
                         entityManager.SetComponentData(raycastHit.Entity, selected);
                         entityManager.SetComponentEnabled<Selected>(raycastHit.Entity, true);    
+                        
+                        EntitiesReferences entitiesReferences = entityManager.CreateEntityQuery(typeof(EntitiesReferences)).GetSingleton<EntitiesReferences>();
+                        Entity createPrefabEntity = entitiesReferences.nikkePrefabEntity;
+                        
+                        Entity spawnedTower = entityManager.Instantiate(createPrefabEntity);
+                        entityManager.SetComponentData(spawnedTower, new LocalTransform
+                        {
+                            Position = gridCell.WorldPosition,
+                            Rotation = quaternion.identity,
+                            Scale = 1f
+                        });
+
+                        gridCell.CanBuild = false;
+                        entityManager.SetComponentData<GridCell>(raycastHit.Entity, gridCell);
                     }
                 }
             }
