@@ -23,11 +23,10 @@ public class MouseWorldPositionUtil : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Vector3 pos = GetHitPosition();
-            Debug.Log("Hit Pos : " + pos);
-        }
+        // if (Input.GetMouseButtonDown(0))
+        // {
+        //     Vector3 pos = GetHitPosition();
+        // }
     }
 
     public Vector3 GetHitPosition()
