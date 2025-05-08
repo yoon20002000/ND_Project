@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 6440784364970104441}
   - component: {fileID: 1053641994995115614}
   - component: {fileID: 7104729606027988744}
-  m_Layer: 0
+  - component: {fileID: 879958576262546908}
+  m_Layer: 7
   m_Name: GridCell
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61,6 +62,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   VisualEntity: {fileID: 2605838965129166307}
   ShowScale: 1
+--- !u!65 &879958576262546908
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2494737551125190979}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 0.01, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2605838965129166307
 GameObject:
   m_ObjectHideFlags: 0
@@ -72,7 +94,6 @@ GameObject:
   - component: {fileID: 2446016525388937312}
   - component: {fileID: 1453746918509056605}
   - component: {fileID: 1272966024010582135}
-  - component: {fileID: 5327551853371013301}
   m_Layer: 0
   m_Name: Selected
   m_TagString: Untagged
@@ -148,28 +169,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &5327551853371013301
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2605838965129166307}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &3147181984033427269
 GameObject:
   m_ObjectHideFlags: 0
