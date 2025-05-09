@@ -19,8 +19,9 @@ partial struct FindTargetSystem : ISystem
     public void OnUpdate(ref SystemState state)
     {
         PhysicsWorldSingleton physicsWorldSingleton = SystemAPI.GetSingleton<PhysicsWorldSingleton>();
-        NativeList<int> removeBufferIndex = new NativeList<int>(BUFFER_DEFAULT_CAPACITY, Allocator.Temp);
         NativeList<DistanceHit> hits = new NativeList<DistanceHit>(Allocator.Temp);
+        NativeHashSet<Entity> existingTargets = new NativeHashSet<Entity>(BUFFER_DEFAULT_CAPACITY, Allocator.Temp);
+        
         foreach ((RefRO<LocalTransform> localTransform, RefRW<FindTarget> findTarget, Entity entity)
                  in SystemAPI.Query<RefRO<LocalTransform>, RefRW<FindTarget>>().WithEntityAccess())
         {
@@ -33,34 +34,24 @@ partial struct FindTargetSystem : ISystem
             findTarget.ValueRW.Timer = findTarget.ValueRO.TimerMax;
 
             DynamicBuffer<TargetBuffer> buffer = state.EntityManager.GetBuffer<TargetBuffer>(entity);
-            removeBufferIndex.Clear();
 
+            existingTargets.Clear();
             for (int targetBufferIndex = 0; targetBufferIndex < buffer.Length; ++targetBufferIndex)
             {
-                if (!CheckFocusTargetValid(ref state, localTransform.ValueRO, buffer[targetBufferIndex].targetEntity,
+                if (CheckFocusTargetValid(ref state, localTransform.ValueRO, buffer[targetBufferIndex].targetEntity,
                         findTarget.ValueRO.MinDistance, findTarget.ValueRO.MaxDistance))
                 {
-                    removeBufferIndex.Add(targetBufferIndex);
+                    existingTargets.Add(buffer[targetBufferIndex].targetEntity);
                 }
             }
-
-            for (int removeIndex = removeBufferIndex.Length - 1; removeIndex >= 0; --removeIndex)
-            {
-                buffer.RemoveAt(removeIndex);
-            }
-
+            buffer.Clear();
             CollisionFilter filter = new CollisionFilter()
             {
                 BelongsTo = ~0u,
                 CollidesWith = findTarget.ValueRO.TargetLayer,
                 GroupIndex = 0,
             };
-
-            if (findTarget.ValueRO.MaxTargets <= buffer.Length)
-            {
-                continue;
-            }
-
+            
             hits.Clear();
 
             if (physicsWorldSingleton.OverlapSphere(localTransform.ValueRO.Position, findTarget.ValueRO.MaxDistance,
@@ -69,8 +60,7 @@ partial struct FindTargetSystem : ISystem
                 for (int hitIndex = 0; hitIndex < hits.Length; ++hitIndex)
                 {
                     Entity targetEntity = hits[hitIndex].Entity;
-                    if (!SystemAPI.Exists(targetEntity) || !SystemAPI.HasComponent<Unit>(targetEntity) ||
-                        CheckDuplication(buffer, targetEntity))
+                    if (!SystemAPI.Exists(targetEntity) || !SystemAPI.HasComponent<Unit>(targetEntity))
                     {
                         continue;
                     }
@@ -81,25 +71,29 @@ partial struct FindTargetSystem : ISystem
                         continue;
                     }
 
-                    float distance = math.distance(localTransform.ValueRO.Position,
+                    float distance = math.distancesq(localTransform.ValueRO.Position,
                         SystemAPI.GetComponent<LocalTransform>(targetEntity).Position);
 
-                    if (distance < findTarget.ValueRO.MinDistance)
+                    if (distance < findTarget.ValueRO.MinDistance * findTarget.ValueRO.MinDistance)
                     {
                         continue;
                     }
-
-                    buffer.Add(new TargetBuffer { targetEntity = targetEntity });
-
+                    
                     if (findTarget.ValueRO.eTargetSearchType == ETargetSearchType.Single ||
-                        findTarget.ValueRO.MaxTargets <= buffer.Length)
+                        findTarget.ValueRO.MaxTargets <= existingTargets.Count)
                     {
                         break;
                     }
+                    existingTargets.Add(targetEntity);
                 }
+            }
+            foreach (Entity validEntity in existingTargets)
+            {
+                buffer.Add(new TargetBuffer { targetEntity = validEntity });
             }
         }
 
+        existingTargets.Dispose();
         hits.Dispose();
     }
 
@@ -119,18 +113,5 @@ partial struct FindTargetSystem : ISystem
         LocalTransform targetLocalTransform = SystemAPI.GetComponent<LocalTransform>(targetEntity);
         float dist = math.distancesq(targetLocalTransform.Position, finderLocalTransform.Position);
         return dist >= minDistance * minDistance && dist <= maxDistance * maxDistance;
-    }
-
-    private bool CheckDuplication(in DynamicBuffer<TargetBuffer> targetEntities, in Entity targetEntity)
-    {
-        foreach (TargetBuffer targetBuffer in targetEntities)
-        {
-            if (targetBuffer.targetEntity == targetEntity)
-            {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

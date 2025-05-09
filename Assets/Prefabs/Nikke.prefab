@@ -270,13 +270,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetingUnitType: 1
   minDistance: 0
-  maxDistance: 5
+  maxDistance: 2
   maxTargets: 2
   timerMax: 1
   targetLayer:
     serializedVersion: 2
     m_Bits: 64
-  eSearchType: 1
 --- !u!114 &4202994025103571018
 MonoBehaviour:
   m_ObjectHideFlags: 0
