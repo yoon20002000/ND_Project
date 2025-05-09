@@ -268,14 +268,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f4ac3b835eedd54d83ebeffb1e8b939, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetingUnitType: 0
+  targetingUnitType: 1
   minDistance: 0
   maxDistance: 5
+  maxTargets: 2
   timerMax: 1
   targetLayer:
     serializedVersion: 2
     m_Bits: 64
-  searchType: 0
+  eSearchType: 1
 --- !u!114 &4202994025103571018
 MonoBehaviour:
   m_ObjectHideFlags: 0

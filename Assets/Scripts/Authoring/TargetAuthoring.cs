@@ -3,21 +3,17 @@ using UnityEngine;
 
 public class TargetAuthoring : MonoBehaviour
 {
+   private static int MAX_BUFFER_SIZE = 5;
    private class Baker : Baker<TargetAuthoring>
    {
       public override void Bake(TargetAuthoring authoring)
       {
          Entity entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
-         AddComponent(entity, new Target
-         {
-            
-         });
+         AddBuffer<TargetBuffer>(entity).EnsureCapacity(MAX_BUFFER_SIZE);
       }
    }
 }
-// IBufferElementData를 이용해서 여러 Target 저장 할 수 있어야 됨
-
-public struct Target : IComponentData
+public struct TargetBuffer : IBufferElementData
 {
    public Entity targetEntity;
 }
