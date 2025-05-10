@@ -29,6 +29,8 @@ public class FindTargetAuthoring : MonoBehaviour
     [SerializeField]
     private LayerMask targetLayer;
     private ETargetSearchType eSearchType;
+    [SerializeField] 
+    private ETargetingType eTargetingType;
     
     private class Baker : Baker<FindTargetAuthoring>
     {
@@ -44,6 +46,7 @@ public class FindTargetAuthoring : MonoBehaviour
                 TimerMax = authoring.timerMax,
                 TargetLayer = (uint)authoring.targetLayer.value,
                 eTargetSearchType = authoring.maxTargets > 1 ? ETargetSearchType.Multiple : ETargetSearchType.Single,
+                eTargetingType = authoring.eTargetingType,
             });
         }
     }
@@ -59,4 +62,5 @@ public struct FindTarget : IComponentData
     public float TimerMax;
     public uint TargetLayer;
     public ETargetSearchType eTargetSearchType;
+    public ETargetingType eTargetingType;
 }
