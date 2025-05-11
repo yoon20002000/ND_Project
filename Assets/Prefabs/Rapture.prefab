@@ -168,7 +168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 659d6ae111e7a36438aeb2205d41a671, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
+  moveSpeed: 3
   damageToGoal: 1
 --- !u!114 &-9212319979926268059
 MonoBehaviour:

@@ -276,6 +276,7 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 64
+  eTargetingType: 0
 --- !u!114 &4202994025103571018
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -56,7 +56,7 @@ public struct FindTarget : IComponentData
 {
     public float MinDistance;
     public float MaxDistance;
-    public float MaxTargets;
+    public int MaxTargets;
     public EUnitType TargetingUnitType;
     public float Timer;
     public float TimerMax;
