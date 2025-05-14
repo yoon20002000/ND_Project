@@ -31,4 +31,9 @@ public struct Status : IComponentData
     public float MaxHp;
     public float Attack; // 추후 movepathalong authoring과 system에서 damage 주는거 따로 system 빼서 status attack을 이용해 처리하는게 좋을 듯 함.
     public float Defense;
+
+    public bool OnHealthChanged;
+    public bool OnMaxHealthChanged;
+    public bool OnAttackChanged;
+    public bool OnDefenseChanged;
 }

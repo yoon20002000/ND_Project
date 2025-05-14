@@ -5,6 +5,7 @@ class EntitiesReferencesAuthoring : MonoBehaviour
 {
     [SerializeField]
     private GameObject nikkePrefab;
+    
     class Baker : Baker<EntitiesReferencesAuthoring>
     {
         public override void Bake(EntitiesReferencesAuthoring authoring)
