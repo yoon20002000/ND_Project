@@ -304,6 +304,7 @@ MonoBehaviour:
   eAttackType: 0
   damageAmount: 10
   defensePierce: 0
+  maxTimer: 0.2
 --- !u!114 &503281959248379489
 MonoBehaviour:
   m_ObjectHideFlags: 0

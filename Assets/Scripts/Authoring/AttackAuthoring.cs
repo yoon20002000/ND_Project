@@ -15,6 +15,8 @@ class AttackAuthoring : MonoBehaviour
     private float damageAmount;
     [SerializeField]
     private float defensePierce;
+    [SerializeField]
+    private float maxTimer;
     class Baker : Baker<AttackAuthoring>
     {
         public override void Bake(AttackAuthoring authoring)
@@ -25,6 +27,8 @@ class AttackAuthoring : MonoBehaviour
                 eAttackType = authoring.eAttackType,
                 DamageAmount = authoring.damageAmount,
                 DefensePierce = authoring.defensePierce,
+                Timer = authoring.maxTimer,
+                MaxTimer = authoring.maxTimer,
             });
         }
     }    
@@ -35,4 +39,10 @@ public struct Attack : IComponentData
     public EAttackType eAttackType;
     public float DamageAmount;
     public float DefensePierce;
+
+    public float Timer;
+    public float MaxTimer;
+    
+    public const float MIN_DAMAGE = 0f;  
+    public const float MAX_DAMAGE = 9999f; 
 }

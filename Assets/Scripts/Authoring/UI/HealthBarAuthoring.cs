@@ -12,7 +12,7 @@ class HealthBarAuthoring : MonoBehaviour
             Entity entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
             AddComponent(entity, new HealthBar
             {
-                barVisualEntity = GetEntity(authoring.barVisualGameObject, TransformUsageFlags.Dynamic),
+                barVisualEntity = GetEntity(authoring.barVisualGameObject, TransformUsageFlags.NonUniformScale),
                 healthTargetEntity = GetEntity(authoring.healthTargetGameObject, TransformUsageFlags.Dynamic),
             });
         }
