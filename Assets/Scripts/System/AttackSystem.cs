@@ -33,8 +33,6 @@ partial struct AttackSystem : ISystem
 
             attack.ValueRW.Timer = attack.ValueRW.MaxTimer;
             
-            float3 totalDir;
-            
             foreach (TargetBuffer target in targetBuffer)
             {
                 if (target.targetEntity == Entity.Null)
@@ -59,8 +57,11 @@ partial struct AttackSystem : ISystem
             if (!targetBuffer.IsEmpty)
             {
                 LocalTransform targetLocalTransform = SystemAPI.GetComponent<LocalTransform>(targetBuffer[0].targetEntity);
-                totalDir = targetLocalTransform.Position - localTransform.ValueRO.Position;
-                targetRotation = quaternion.LookRotation(totalDir, math.up());
+                float3 totalDir = targetLocalTransform.Position - localTransform.ValueRO.Position;
+                if (!math.all(totalDir == float3.zero))
+                {
+                    targetRotation = quaternion.LookRotation(totalDir, math.up());
+                }
             }
 
             localTransform.ValueRW.Rotation = targetRotation;
