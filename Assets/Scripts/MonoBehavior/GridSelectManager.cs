@@ -72,7 +72,7 @@ public class GridSelectManager : MonoBehaviour
                         entityManager.SetComponentEnabled<Selected>(raycastHit.Entity, true);    
                         
                         EntitiesReferences entitiesReferences = entityManager.CreateEntityQuery(typeof(EntitiesReferences)).GetSingleton<EntitiesReferences>();
-                        Entity createPrefabEntity = entitiesReferences.nikkePrefabEntity;
+                        Entity createPrefabEntity = entitiesReferences.NikkePrefabEntity;
                         
                         Entity spawnedTower = entityManager.Instantiate(createPrefabEntity);
                         entityManager.SetComponentData(spawnedTower, new LocalTransform

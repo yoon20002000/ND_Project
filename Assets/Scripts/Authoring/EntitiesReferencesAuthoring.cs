@@ -5,7 +5,8 @@ class EntitiesReferencesAuthoring : MonoBehaviour
 {
     [SerializeField]
     private GameObject nikkePrefab;
-    
+    [SerializeField]
+    private GameObject hitParticle;
     class Baker : Baker<EntitiesReferencesAuthoring>
     {
         public override void Bake(EntitiesReferencesAuthoring authoring)
@@ -13,7 +14,8 @@ class EntitiesReferencesAuthoring : MonoBehaviour
             Entity entity = GetEntity(authoring, TransformUsageFlags.None);
             AddComponent(entity, new EntitiesReferences
             {
-                nikkePrefabEntity = GetEntity(authoring.nikkePrefab, TransformUsageFlags.Dynamic),
+                NikkePrefabEntity = GetEntity(authoring.nikkePrefab, TransformUsageFlags.Dynamic),
+                HitParticleEntity = GetEntity(authoring.hitParticle, TransformUsageFlags.Dynamic),
             });
         }
     }    
@@ -21,5 +23,6 @@ class EntitiesReferencesAuthoring : MonoBehaviour
 
 public struct EntitiesReferences : IComponentData
 {
-    public Entity nikkePrefabEntity;
+    public Entity NikkePrefabEntity;
+    public Entity HitParticleEntity;
 }

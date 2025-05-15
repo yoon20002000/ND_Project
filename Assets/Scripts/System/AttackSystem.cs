@@ -16,7 +16,8 @@ partial struct AttackSystem : ISystem
     {
         // 공격 지점 추가 판정 시 이팩트 생성 필요 시 참조
         EntitiesReferences entitiesReferences = SystemAPI.GetSingleton<EntitiesReferences>();
-
+        EntityCommandBuffer ecb = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
+        
         foreach ((RefRW<LocalTransform> localTransform, RefRW<Attack> attack, RefRO<FindTarget> findTarget, DynamicBuffer<TargetBuffer> targetBuffer, RefRO<Status> status, Entity entity)
     in SystemAPI.Query<RefRW<LocalTransform>, RefRW<Attack>, RefRO<FindTarget>, DynamicBuffer<TargetBuffer>, RefRO<Status>>().WithEntityAccess())
         {
@@ -49,6 +50,16 @@ partial struct AttackSystem : ISystem
                     
                     targetStatus.ValueRW.CurHP = math.clamp(curHp - totalDamage,Status.MIN_HP,Status.MAX_HP);
                     targetStatus.ValueRW.OnHealthChanged = true;
+                    
+                    // 파티클 생성
+                    Entity hitParticleEntity = ecb.Instantiate(entitiesReferences.HitParticleEntity);
+                    LocalTransform particleTransform = state.EntityManager.GetComponentData<LocalTransform>(entitiesReferences.HitParticleEntity); 
+                    ecb.SetComponent(hitParticleEntity, new LocalTransform
+                    {
+                        Position = targetLocalTransform.Position,
+                        Scale = particleTransform.Scale,
+                        Rotation = quaternion.identity
+                    });
                 }
             }
             
@@ -66,11 +77,5 @@ partial struct AttackSystem : ISystem
 
             localTransform.ValueRW.Rotation = targetRotation;
         }
-    }
-
-    [BurstCompile]
-    public void OnDestroy(ref SystemState state)
-    {
-        
     }
 }

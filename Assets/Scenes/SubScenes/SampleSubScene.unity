@@ -212,6 +212,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nikkePrefab: {fileID: 6782936473774124900, guid: 99fa5930e34196e4992430b3e819220e, type: 3}
+  hitParticle: {fileID: 2081415404643108581, guid: 26df47f8121c63f49a92b9eedd3438eb, type: 3}
 --- !u!4 &883502348
 Transform:
   m_ObjectHideFlags: 0
