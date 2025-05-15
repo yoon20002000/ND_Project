@@ -33,10 +33,15 @@ partial struct AttackSystem : ISystem
 
             attack.ValueRW.Timer = attack.ValueRW.MaxTimer;
             
-            float3 totalDir = float3.zero;
+            float3 totalDir;
             
             foreach (TargetBuffer target in targetBuffer)
             {
+                if (target.targetEntity == Entity.Null)
+                {
+                    continue;
+                }
+                
                 LocalTransform targetLocalTransform = SystemAPI.GetComponent<LocalTransform>(target.targetEntity);
                 if (math.distancesq(localTransform.ValueRO.Position,targetLocalTransform.Position) <= findTarget.ValueRO.MaxDistance * findTarget.ValueRO.MaxDistance)
                 {
