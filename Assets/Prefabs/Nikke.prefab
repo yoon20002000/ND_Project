@@ -301,7 +301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 778b2c700f1077b42aa52d3b79c53403, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eAttackType: 0
+  splashRadius: 1.5
   damageAmount: 10
   defensePierce: 0
   maxTimer: 0.2

@@ -9,8 +9,8 @@ public enum EAttackType
 
 class AttackAuthoring : MonoBehaviour
 {
-    [SerializeField]
-    private EAttackType eAttackType;
+    [SerializeField] 
+    private float splashRadius;
     [SerializeField]
     private float damageAmount;
     [SerializeField]
@@ -24,7 +24,7 @@ class AttackAuthoring : MonoBehaviour
             Entity entity = GetEntity(authoring, TransformUsageFlags.None);
             AddComponent(entity, new Attack
             {
-                eAttackType = authoring.eAttackType,
+                eAttackType = authoring.splashRadius > 0 ? EAttackType.SplashShot : EAttackType.SingleShot,
                 DamageAmount = authoring.damageAmount,
                 DefensePierce = authoring.defensePierce,
                 Timer = authoring.maxTimer,
@@ -39,6 +39,7 @@ public struct Attack : IComponentData
     public EAttackType eAttackType;
     public float DamageAmount;
     public float DefensePierce;
+    public float SplashRadius;
 
     public float Timer;
     public float MaxTimer;
