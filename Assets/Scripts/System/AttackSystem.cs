@@ -10,7 +10,7 @@ partial struct AttackSystem : ISystem
     [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
-        
+        state.RequireForUpdate<Attack>();
     }
 
     [BurstCompile]
