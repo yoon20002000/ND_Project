@@ -221,7 +221,7 @@ GameObject:
   - component: {fileID: 503281959248379489}
   - component: {fileID: 8555964162652501193}
   m_Layer: 0
-  m_Name: Nikke
+  m_Name: Nikke_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -270,13 +270,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetingUnitType: 1
   minDistance: 0
-  maxDistance: 2
-  maxTargets: 2
-  timerMax: 1
+  maxDistance: 5
+  maxTargets: 1
+  timerMax: 3
   targetLayer:
     serializedVersion: 2
     m_Bits: 64
-  eTargetingType: 0
+  eTargetingType: 1
 --- !u!114 &4202994025103571018
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -301,10 +301,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 778b2c700f1077b42aa52d3b79c53403, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  splashRadius: 1.5
-  damageAmount: 10
-  defensePierce: 0
-  maxTimer: 0.2
+  splashRadius: 0
+  damageAmount: 25
+  defensePierce: 1
+  maxTimer: 3
 --- !u!114 &503281959248379489
 MonoBehaviour:
   m_ObjectHideFlags: 0

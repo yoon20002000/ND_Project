@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d07874a3425f7144085754e9c263c1cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPeriod: 3
+  spawnPeriod: 0.5
   spawnLimitTime: 60
   spawnCount: 100
   spawnPrefab: {fileID: 3087449349777590424, guid: 66ab2a3b3f1d678428726d733588f4a0, type: 3}
@@ -287,7 +287,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d07874a3425f7144085754e9c263c1cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPeriod: 3
+  spawnPeriod: 0.5
   spawnLimitTime: 60
   spawnCount: 100
   spawnPrefab: {fileID: 3087449349777590424, guid: 66ab2a3b3f1d678428726d733588f4a0, type: 3}
@@ -415,7 +415,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 347765395743000313, guid: 79889eafb0e1f6e47ba685e84636cf50, type: 3}
       propertyPath: spawnPeriod
-      value: 3
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2530308425038003014, guid: 79889eafb0e1f6e47ba685e84636cf50, type: 3}
       propertyPath: m_Name
