@@ -8,6 +8,18 @@ public abstract class ScrollItemBase : MonoBehaviour
     
     protected Transform scrollItemTransform;
     public Transform GetTransform() => scrollItemTransform;
+    
+    protected RectTransform rectTransform;
+
+    public RectTransform GetRectTransform()
+    {
+        if (rectTransform == null)
+        {
+            rectTransform = transform as RectTransform;
+        }
+
+        return rectTransform;
+    }
 
     public virtual void Initialize(int index, Transform inScrollItemTransform)
     {
