@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c80b979c6e47b04caed9b1aecf3f14c, type: 3}
+  m_Name: NikkeDataList
+  m_EditorClassIdentifier: 
+  NikkeData:
+  - {fileID: 11400000, guid: ad047f71e3be02c4185fe74e8ef3ec68, type: 2}
+  - {fileID: 11400000, guid: cd7ec97b95b6f804f91fd5078ba95e93, type: 2}
+  - {fileID: 11400000, guid: 7c9a8674f7a441a46996396de7173e85, type: 2}
