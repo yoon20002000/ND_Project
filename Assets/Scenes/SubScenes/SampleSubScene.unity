@@ -211,7 +211,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a05cb0ad76c21a42bf66f5b6b931c2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nikkePrefab: {fileID: 6782936473774124900, guid: 99fa5930e34196e4992430b3e819220e, type: 3}
+  nikkePrefabs:
+  - NikkeName: "\uD64D\uB828"
+    NikkePrefab: {fileID: 6782936473774124900, guid: 99fa5930e34196e4992430b3e819220e, type: 3}
+  - NikkeName: "\uD751\uB828"
+    NikkePrefab: {fileID: 6782936473774124900, guid: d430c365c2c2e6c4f932ed47bae4a2f7, type: 3}
+  - NikkeName: "\uC568\uB9AC\uC2A4"
+    NikkePrefab: {fileID: 6782936473774124900, guid: 8f4ec8abe8244e249b9d3ef2f990e456, type: 3}
   hitParticle: {fileID: 2081415404643108581, guid: 26df47f8121c63f49a92b9eedd3438eb, type: 3}
 --- !u!4 &883502348
 Transform:

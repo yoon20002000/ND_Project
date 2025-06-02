@@ -4,6 +4,7 @@ using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Transforms;
 using UnityEngine;
+using Utils;
 
 public class GridSelectManager : MonoBehaviour
 {
@@ -71,8 +72,10 @@ public class GridSelectManager : MonoBehaviour
                         entityManager.SetComponentData(raycastHit.Entity, selected);
                         entityManager.SetComponentEnabled<Selected>(raycastHit.Entity, true);    
                         
-                        EntitiesReferences entitiesReferences = entityManager.CreateEntityQuery(typeof(EntitiesReferences)).GetSingleton<EntitiesReferences>();
-                        Entity createPrefabEntity = entitiesReferences.NikkePrefabEntity;
+                        Entity refEntity = entityManager.CreateEntityQuery(typeof(EntitiesReferences)).GetSingletonEntity();
+                        
+                        Entity createPrefabEntity =
+                            EntityReferenceUtil.GetNikkePrefabByName(refEntity, "Scarlet", entityManager);
                         
                         Entity spawnedTower = entityManager.Instantiate(createPrefabEntity);
                         entityManager.SetComponentData(spawnedTower, new LocalTransform
