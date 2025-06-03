@@ -92,7 +92,7 @@ public class GridSelectManager : MonoBehaviour
                         // gridCell.HasTower = true;
                         // entityManager.SetComponentData<GridCell>(raycastHit.Entity, gridCell);
 
-                        UIManager.Instance.OpenUI(UIEnum.UI_SpawnNikke, mainCamera, gridCell.WorldPosition);
+                        UIManager.Instance.OpenUI(EUIType.UI_SpawnNikke, mainCamera, gridCell.WorldPosition);
                     }
                 }
             }

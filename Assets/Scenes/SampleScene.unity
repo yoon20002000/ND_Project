@@ -164,6 +164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCanvas: {fileID: 1906956907}
+  layerGroup: {fileID: 11400000, guid: b38849f7766e1114d99052fd03d2c1e6, type: 2}
   uiList: {fileID: 11400000, guid: b0df512243e0cbf4c84606cb7a3bd7bf, type: 2}
 --- !u!1 &285698190
 GameObject:

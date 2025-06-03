@@ -5,7 +5,7 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public class UI_SpawnNikke : ScrollVirtualizer
 {
-    public override UIEnum UIEnumValue => UIEnum.UI_SpawnNikke; 
+    public override EUIType EuiTypeValue => EUIType.UI_SpawnNikke; 
     [SerializeField] private NikkeDataList nikkeDataList;
 
     protected override void Start()

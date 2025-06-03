@@ -2,7 +2,7 @@ using UnityEngine.EventSystems;
 
 public abstract class UIBase : UIBehaviour
 {
-    public abstract UIEnum UIEnumValue { get; }
+    public abstract EUIType EuiTypeValue { get; }
     public virtual void OpenUI()
     {
         gameObject.SetActive(true);

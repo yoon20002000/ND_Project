@@ -1,4 +1,4 @@
-public enum UIEnum
+public enum EUIType
 {
     UI_SpawnNikke = 0,
     

@@ -1,20 +1,52 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class UIManager : MonoSingletonPersistent<UIManager>
 {
     [SerializeField]
     private Canvas mainCanvas;
+
+    [SerializeField] 
+    private UILayerGroup layerGroup;
     [SerializeField]
     private UIList uiList;
 
-    
+    private Dictionary<EUIType, UIBase> dicActivedUI = new Dictionary<EUIType, UIBase>();
+    private Dictionary<EUILayer, Canvas> dicLayers = new Dictionary<EUILayer, Canvas>();
 
-    private GameObject mainUI;
-    public void OpenUI(UIEnum uiEnum, Camera mainCamera, Vector3 worldPos)
+    private void Start()
     {
-        if (mainUI != null)
+        Initialize();
+    }
+
+    private void Initialize()
+    {
+        Assert.IsNotNull(layerGroup);
+
+        layerGroup.InitLayerGroup();
+
+        for (int layerIndex = 0; layerIndex < layerGroup.Count; ++layerIndex)
         {
-            Destroy(mainUI);    
+            UILayer uiLayer = layerGroup[layerIndex];
+            if (dicLayers.ContainsKey(uiLayer.UILayerType))
+            {
+                Debug.LogWarning($"UI Layer {uiLayer.UILayerType} Already Exists");
+                continue;
+            }
+            GameObject newCanvasObj = Instantiate(uiLayer.LayerPrefab, mainCanvas.transform);
+            Canvas newCanvas = newCanvasObj.GetComponent<Canvas>();
+            dicLayers.Add(uiLayer.UILayerType, newCanvas);
+        }
+    }
+
+    public void OpenUI(EUIType eUIType, Camera mainCamera, Vector3 worldPos)
+    {
+        if (dicActivedUI.TryGetValue(eUIType, out UIBase ub))
+        {
+            ub.OpenUI();
+            return;
         }
         
         if (mainCamera == null)
@@ -24,34 +56,43 @@ public class UIManager : MonoSingletonPersistent<UIManager>
         
         Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(mainCamera, worldPos);
 
-        GameObject prefab = uiList.GetUIPrefab(uiEnum);
+        GameObject prefab = uiList.GetUIPrefab(eUIType);
 
         if (prefab == null)
         {
-            Debug.LogWarning($"{uiEnum} not found");
+            Debug.LogWarning($"{eUIType} not found");
             return;
         }
 
-        mainUI = Instantiate(prefab, mainCanvas.transform, true);
+        GameObject newInstance = Instantiate(prefab, mainCanvas.transform, true);
+
+        ub = newInstance.GetComponent<UIBase>();
+        dicActivedUI.Add(eUIType, ub);
         
-        RectTransform rectTransform = mainUI.transform as RectTransform;
+        RectTransform rectTransform = newInstance.transform as RectTransform;
         if (rectTransform != null)
         {
             rectTransform.position = screenPos;
         }
-
-        UIBase uiBase = mainUI.GetComponent<UIBase>();
-        if (uiBase)
+        
+        if (ub)
         {
-            uiBase.OpenUI();
+            ub.OpenUI();
         }
     }
 
-    public void CloseUI(string uiName)
+    public void CloseUI(EUIType eUIType, bool bDestroy = true)
     {
-        if (mainUI != null)
+        if (!dicActivedUI.TryGetValue(eUIType, out UIBase ub))
         {
-            Destroy(mainUI);    
+            return;
+        }
+        
+        ub.CloseUI();
+        if (bDestroy)
+        {
+            Destroy(ub.gameObject);
+            dicActivedUI.Remove(eUIType);
         }
     }
 }
