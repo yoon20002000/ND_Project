@@ -7,10 +7,10 @@ public class UIManager : MonoSingletonPersistent<UIManager>
     [SerializeField]
     private UIList uiList;
 
-    // to do create layer
+    
 
     private GameObject mainUI;
-    public void OpenUI(string uiName, Camera mainCamera, Vector3 worldPos)
+    public void OpenUI(UIEnum uiEnum, Camera mainCamera, Vector3 worldPos)
     {
         if (mainUI != null)
         {
@@ -24,11 +24,11 @@ public class UIManager : MonoSingletonPersistent<UIManager>
         
         Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(mainCamera, worldPos);
 
-        GameObject prefab = uiList.GetUIPrefab(uiName);
+        GameObject prefab = uiList.GetUIPrefab(uiEnum);
 
         if (prefab == null)
         {
-            Debug.LogWarning($"{uiName} not found");
+            Debug.LogWarning($"{uiEnum} not found");
             return;
         }
 

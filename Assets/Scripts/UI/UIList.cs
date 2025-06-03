@@ -9,17 +9,17 @@ public class UIList : ScriptableObject
     [Serializable]
     public struct UIPrefab
     {
-        public string Name;
+        public UIEnum uiEnum;
         public GameObject Prefab;
     }
     [SerializeField]
     private List<UIPrefab> uiPrefabs = new List<UIPrefab>();
 
-    public GameObject GetUIPrefab(string name)
+    public GameObject GetUIPrefab(UIEnum uiEnum)
     {
         for (int uiIndex = 0; uiIndex < uiPrefabs.Count; ++uiIndex)
         {
-            if (uiPrefabs[uiIndex].Name == name)
+            if (uiPrefabs[uiIndex].uiEnum == uiEnum)
             {
              return uiPrefabs[uiIndex].Prefab;   
             }
