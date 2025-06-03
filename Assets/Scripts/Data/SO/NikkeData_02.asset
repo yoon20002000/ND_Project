@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07a284d99249337478aaed92dae469be, type: 3}
   m_Name: NikkeData_02
   m_EditorClassIdentifier: 
-  NikkeName: "\uC568\uB9AC\uC2A4"
-  NikkePrefab: {fileID: 6782936473774124900, guid: 8f4ec8abe8244e249b9d3ef2f990e456, type: 3}
+  NikkeName: Alice
   NikkeIcon: {fileID: 21300000, guid: ae5b5ec0fe63b4147b8e575cbd2b62c1, type: 3}

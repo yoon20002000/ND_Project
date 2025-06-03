@@ -65,7 +65,7 @@ public class GridSelectManager : MonoBehaviour
                 if (entityManager.HasComponent<GridCell>(raycastHit.Entity) && entityManager.HasComponent<Selected>(raycastHit.Entity))
                 {
                     GridCell gridCell = entityManager.GetComponentData<GridCell>(raycastHit.Entity);
-                    if (gridCell.CanBuild && !gridCell.HasTower)
+                    if (gridCell is { CanBuild: true, HasTower: false })
                     {
                         Selected selected = entityManager.GetComponentData<Selected>(raycastHit.Entity);
                         selected.onSelected = true;
