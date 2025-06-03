@@ -39,7 +39,12 @@ public class UIManager : MonoSingletonPersistent<UIManager>
         {
             rectTransform.position = screenPos;
         }
-        mainUI.gameObject.SetActive(true);
+
+        UIBase uiBase = mainUI.GetComponent<UIBase>();
+        if (uiBase)
+        {
+            uiBase.OpenUI();
+        }
     }
 
     public void CloseUI(string uiName)

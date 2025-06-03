@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 
-public class ScrollVirtualizer : MonoBehaviour
+public abstract class ScrollVirtualizer : UIBase
 {
     [SerializeField]
     private ScrollRect scrollRect;

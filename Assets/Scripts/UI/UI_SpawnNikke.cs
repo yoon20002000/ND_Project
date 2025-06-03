@@ -5,10 +5,12 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public class UI_SpawnNikke : ScrollVirtualizer
 {
+    public override UIEnum UIEnumValue => UIEnum.UI_SpawnNikke; 
     [SerializeField] private NikkeDataList nikkeDataList;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         StartCoroutine(InitializeLater());
     }
 
