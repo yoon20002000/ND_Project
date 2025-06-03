@@ -1,17 +1,15 @@
 using Unity.Collections;
 using Unity.Entities;
-using Unity.Mathematics;
 using Unity.Physics;
-using Unity.Transforms;
 using UnityEngine;
-using Utils;
+using UnityEngine.EventSystems;
 
 public class GridSelectManager : MonoBehaviour
 {
     [SerializeField] 
-    private Camera MainCamera;
+    private Camera mainCamera;
     [SerializeField]
-    private GameObject TowerPrefab;
+    private GameObject towerPrefab;
     
     private EntityManager entityManager;
     private Entity towerPrefabEntity;
@@ -28,6 +26,12 @@ public class GridSelectManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
+            // UI 시 무시
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                return;
+            }
+            
             // Reset
             EntityQuery entityQuery =  new EntityQueryBuilder(Allocator.Temp).WithAll<Selected>().Build(entityManager);
             NativeArray<Entity> entityArray = entityQuery.ToEntityArray(Allocator.Temp);
@@ -45,7 +49,7 @@ public class GridSelectManager : MonoBehaviour
             entityQuery = entityManager.CreateEntityQuery(typeof(PhysicsWorldSingleton));
             PhysicsWorldSingleton physicsWorldSingleton = entityQuery.GetSingleton<PhysicsWorldSingleton>();
             CollisionWorld collisionWorld = physicsWorldSingleton.CollisionWorld;
-            UnityEngine.Ray cameraRay = MainCamera.ScreenPointToRay(Input.mousePosition);
+            UnityEngine.Ray cameraRay = mainCamera.ScreenPointToRay(Input.mousePosition);
             RaycastInput raycastInput = new RaycastInput
             {
                 Start = cameraRay.GetPoint(RAY_DISTANCE_START),
@@ -72,21 +76,23 @@ public class GridSelectManager : MonoBehaviour
                         entityManager.SetComponentData(raycastHit.Entity, selected);
                         entityManager.SetComponentEnabled<Selected>(raycastHit.Entity, true);    
                         
-                        Entity refEntity = entityManager.CreateEntityQuery(typeof(EntitiesReferences)).GetSingletonEntity();
-                        
-                        Entity createPrefabEntity =
-                            EntityReferenceUtil.GetNikkePrefabByName(refEntity, "Scarlet", entityManager);
-                        
-                        Entity spawnedTower = entityManager.Instantiate(createPrefabEntity);
-                        entityManager.SetComponentData(spawnedTower, new LocalTransform
-                        {
-                            Position = gridCell.WorldPosition,
-                            Rotation = quaternion.identity,
-                            Scale = 1f
-                        });
+                        // Entity refEntity = entityManager.CreateEntityQuery(typeof(EntitiesReferences)).GetSingletonEntity();
+                        //
+                        // Entity createPrefabEntity =
+                        //     EntityReferenceUtil.GetNikkePrefabByName(refEntity, "Scarlet", entityManager);
+                        //
+                        // Entity spawnedTower = entityManager.Instantiate(createPrefabEntity);
+                        // entityManager.SetComponentData(spawnedTower, new LocalTransform
+                        // {
+                        //     Position = gridCell.WorldPosition,
+                        //     Rotation = quaternion.identity,
+                        //     Scale = 1f
+                        // });
+                        //
+                        // gridCell.HasTower = true;
+                        // entityManager.SetComponentData<GridCell>(raycastHit.Entity, gridCell);
 
-                        gridCell.HasTower = true;
-                        entityManager.SetComponentData<GridCell>(raycastHit.Entity, gridCell);
+                        UIManager.Instance.OpenUI("UI_SpawnNikke", mainCamera, gridCell.WorldPosition);
                     }
                 }
             }
