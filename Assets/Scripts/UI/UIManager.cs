@@ -57,11 +57,11 @@ public class UIManager : MonoSingletonPersistent<UIManager>
                 return;
             }
             
-            GameObject instance = Instantiate(prefab, mainCanvas.transform, true);
-            if (!instance.TryGetComponent<UIBase>(out uiBase))
+            GameObject newInstance = Instantiate(prefab, mainCanvas.transform, true);
+            if (!newInstance.TryGetComponent<UIBase>(out uiBase))
             {
                 Debug.LogWarning($"{eUIType.ToString()} prefab does not have UIBase component.");
-                Destroy(instance);
+                Destroy(newInstance);
                 return;
             }
             dicActivedUI.Add(eUIType, uiBase);

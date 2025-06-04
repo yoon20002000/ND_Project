@@ -1,16 +1,23 @@
+using System;
 using TMPro;
+using Unity.Entities;
+using Unity.Mathematics;
+using Unity.Transforms;
 using UnityEngine;
 using UnityEngine.UI;
+using Utils;
 
 class UI_SpawnNikkeScrollData : ScrollData
 {
-    public Sprite img_Icon { get; private set; }
-    public string Name { get; private set; }
-
-    public UI_SpawnNikkeScrollData(Sprite icon, string name)
+    public Action<NikkeData> OnClicked { get; private set; }
+    public NikkeData NikkeData { get; private set; }
+    public Sprite Img_Icon => NikkeData.NikkeIcon;
+    public string Name => NikkeData.NikkeName;
+    
+    public UI_SpawnNikkeScrollData(Action<NikkeData> onClicked, NikkeData nikkeData)
     {
-        img_Icon = icon;
-        Name = name;
+        OnClicked = onClicked;
+        NikkeData = nikkeData;
     }
 }
 
@@ -21,12 +28,36 @@ class UI_SpawnNikkeScrollItem : ScrollItemBase
     [SerializeField]
     private TextMeshProUGUI txt_Name;
 
+    [SerializeField] 
+    private Button btn_Click;
+
+    private Entity targetEntity;
+    private GridCell targetGridCell;
+    private Action<NikkeData> onClickedEvent;
+    private NikkeData nikkeData;
+
+    private void Start()
+    {
+        btn_Click.onClick.AddListener(onClicked);
+    }
+
     public override void SetData(ScrollData inData)
     {
+        targetGridCell = default;
         if (inData is UI_SpawnNikkeScrollData data)
         {
-            img_Icon.sprite = data.img_Icon;
+            onClickedEvent = data.OnClicked;
+            nikkeData = data.NikkeData;
+            img_Icon.sprite = data.Img_Icon;
             txt_Name.text = data.Name;
+        }
+    }
+
+    private void onClicked()
+    {
+        if (onClickedEvent != null)
+        {
+            onClickedEvent.Invoke(nikkeData);
         }
     }
 }
