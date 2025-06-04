@@ -1,12 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Entities;
+using Unity.Mathematics;
+using Unity.Transforms;
 using UnityEngine;
+using UnityEngine.Assertions;
 using Utils;
 
 [DisallowMultipleComponent]
 public class UI_SpawnNikke : ScrollVirtualizer
 {
+    public class UI_SpawnNikkeOpenData : UIParamBase
+    {
+        public Entity TargetEntity { get; private set; }
+        public GridCell TargetCell { get; private set; }
+
+        public UI_SpawnNikkeOpenData(Entity targetEntity, GridCell targetCell)
+        {
+            TargetEntity = targetEntity;
+            TargetCell = targetCell;
+        }
+    }
     public override EUIType EuiTypeValue => EUIType.UI_SpawnNikke; 
     [SerializeField]
     private NikkeDataList nikkeDataList;
@@ -18,10 +32,17 @@ public class UI_SpawnNikke : ScrollVirtualizer
         StartCoroutine(InitializeLater());
     }
 
-    public override void OpenUI()
+    public override void OpenUI(UIParamBase param)
     {
-        base.OpenUI();
+        base.OpenUI(param);
         
+        Assert.IsTrue(param is UI_SpawnNikkeOpenData);
+        
+        if (param is UI_SpawnNikkeOpenData data)
+        {
+            targetEntity = data.TargetEntity;
+            targetGridCell = data.TargetCell;
+        }
     }
 
     private IEnumerator InitializeLater()
@@ -41,9 +62,20 @@ public class UI_SpawnNikke : ScrollVirtualizer
     private void onClickedScrollItem(NikkeData nikkeData)
     {
         Debug.LogWarning($"Warning {nikkeData.NikkeName}");
-        // EntityManager entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-        // Entity refEntity = entityManager.CreateEntityQuery(typeof(EntitiesReferences)).GetSingletonEntity();
-        // var entity = EntityReferenceUtil.GetNikkePrefabByName(refEntity, nikkeData.NikkeName, entityManager);
-        // 생성 코드 추가 필요
+        EntityManager entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+        Entity refEntity = entityManager.CreateEntityQuery(typeof(EntitiesReferences)).GetSingletonEntity();
+        var createPrefabEntity = EntityReferenceUtil.GetNikkePrefabByName(refEntity, nikkeData.NikkeName, entityManager);
+        
+        Entity spawnedTower = entityManager.Instantiate(createPrefabEntity);
+        entityManager.SetComponentData(spawnedTower, new LocalTransform
+        {
+            Position = targetGridCell.WorldPosition,
+            Rotation = quaternion.identity,
+            Scale = 1f
+        });
+        
+        targetGridCell.HasTower = true;
+        entityManager.SetComponentData<GridCell>(targetEntity, targetGridCell);
+        CloseUI();
     }
 }

@@ -41,7 +41,7 @@ public class UIManager : MonoSingletonPersistent<UIManager>
         }
     }
 
-    public void OpenUI(EUIType eUIType, Camera mainCamera, Vector3 worldPos)
+    public void OpenUI(EUIType eUIType, Camera mainCamera, Vector3 worldPos, UIParamBase uiParamBase = null)
     {
         if (mainCamera == null)
         {
@@ -74,7 +74,7 @@ public class UIManager : MonoSingletonPersistent<UIManager>
             rectTransform.position = screenPos;
         }
         
-        uiBase.OpenUI();
+        uiBase.OpenUI(uiParamBase);
     }
 
     public void CloseUI(EUIType eUIType, bool bDestroy = true)

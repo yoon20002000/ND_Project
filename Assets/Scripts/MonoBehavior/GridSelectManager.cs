@@ -75,24 +75,9 @@ public class GridSelectManager : MonoBehaviour
                         selected.onSelected = true;
                         entityManager.SetComponentData(raycastHit.Entity, selected);
                         entityManager.SetComponentEnabled<Selected>(raycastHit.Entity, true);    
-                        
-                        // Entity refEntity = entityManager.CreateEntityQuery(typeof(EntitiesReferences)).GetSingletonEntity();
-                        //
-                        // Entity createPrefabEntity =
-                        //     EntityReferenceUtil.GetNikkePrefabByName(refEntity, "Scarlet", entityManager);
-                        //
-                        // Entity spawnedTower = entityManager.Instantiate(createPrefabEntity);
-                        // entityManager.SetComponentData(spawnedTower, new LocalTransform
-                        // {
-                        //     Position = gridCell.WorldPosition,
-                        //     Rotation = quaternion.identity,
-                        //     Scale = 1f
-                        // });
-                        //
-                        // gridCell.HasTower = true;
-                        // entityManager.SetComponentData<GridCell>(raycastHit.Entity, gridCell);
 
-                        UIManager.Instance.OpenUI(EUIType.UI_SpawnNikke, mainCamera, gridCell.WorldPosition);
+                        UIManager.Instance.OpenUI(EUIType.UI_SpawnNikke, mainCamera, gridCell.WorldPosition,
+                            new UI_SpawnNikke.UI_SpawnNikkeOpenData(raycastHit.Entity, gridCell));
                     }
                 }
             }

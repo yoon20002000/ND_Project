@@ -1,18 +1,15 @@
 using System;
 using TMPro;
 using Unity.Entities;
-using Unity.Mathematics;
-using Unity.Transforms;
 using UnityEngine;
 using UnityEngine.UI;
-using Utils;
 
 class UI_SpawnNikkeScrollData : ScrollData
 {
     public Action<NikkeData> OnClicked { get; private set; }
     public NikkeData NikkeData { get; private set; }
     public Sprite Img_Icon => NikkeData.NikkeIcon;
-    public string Name => NikkeData.NikkeName;
+    public string Name => NikkeData.NikkeDisplayName;
     
     public UI_SpawnNikkeScrollData(Action<NikkeData> onClicked, NikkeData nikkeData)
     {

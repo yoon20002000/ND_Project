@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: NikkeData_00
   m_EditorClassIdentifier: 
   NikkeName: Scarlet
+  NikkeDisplayName: "\uD64D\uB828"
   NikkeIcon: {fileID: 21300000, guid: e724576a69a55664a9265e330a7c4098, type: 3}
