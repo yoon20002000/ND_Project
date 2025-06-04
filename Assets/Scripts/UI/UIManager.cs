@@ -43,45 +43,38 @@ public class UIManager : MonoSingletonPersistent<UIManager>
 
     public void OpenUI(EUIType eUIType, Camera mainCamera, Vector3 worldPos)
     {
-        GameObject instanceObject = null;
-        if (dicActivedUI.TryGetValue(eUIType, out UIBase ub))
+        if (mainCamera == null)
         {
-            instanceObject = ub.gameObject;
-            ub = instanceObject.GetComponent<UIBase>();
+            mainCamera = Camera.main;
         }
-        else
-        {
-            if (mainCamera == null)
-            {
-                mainCamera = Camera.main;
-            }
-        
-            GameObject prefab = uiList.GetUIPrefab(eUIType);
 
+        if (!dicActivedUI.TryGetValue(eUIType, out UIBase uiBase) || uiBase == null)
+        {
+            GameObject prefab = uiList.GetUIPrefab(eUIType);
             if (prefab == null)
             {
-                Debug.LogWarning($"{eUIType} not found");
+                Debug.LogWarning($"UI prefab for {eUIType.ToString()} not found.");
                 return;
             }
-            instanceObject= Instantiate(prefab, mainCanvas.transform, true);
             
-            ub = instanceObject.GetComponent<UIBase>();
-            
-            dicActivedUI.Add(eUIType, ub);
+            GameObject instance = Instantiate(prefab, mainCanvas.transform, true);
+            if (!instance.TryGetComponent<UIBase>(out uiBase))
+            {
+                Debug.LogWarning($"{eUIType.ToString()} prefab does not have UIBase component.");
+                Destroy(instance);
+                return;
+            }
+            dicActivedUI.Add(eUIType, uiBase);
         }
-
-        Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(mainCamera, worldPos);
         
-        RectTransform rectTransform = instanceObject.transform as RectTransform;
-        if (rectTransform != null)
+        Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(mainCamera, worldPos);
+
+        if (uiBase.transform is RectTransform rectTransform)
         {
             rectTransform.position = screenPos;
         }
         
-        if (ub)
-        {
-            ub.OpenUI();
-        }
+        uiBase.OpenUI();
     }
 
     public void CloseUI(EUIType eUIType, bool bDestroy = true)
