@@ -43,33 +43,36 @@ public class UIManager : MonoSingletonPersistent<UIManager>
 
     public void OpenUI(EUIType eUIType, Camera mainCamera, Vector3 worldPos)
     {
+        GameObject instanceObject = null;
         if (dicActivedUI.TryGetValue(eUIType, out UIBase ub))
         {
-            ub.OpenUI();
-            return;
+            instanceObject = ub.gameObject;
+            ub = instanceObject.GetComponent<UIBase>();
         }
-        
-        if (mainCamera == null)
+        else
         {
-            mainCamera = Camera.main;
-        }
+            if (mainCamera == null)
+            {
+                mainCamera = Camera.main;
+            }
         
+            GameObject prefab = uiList.GetUIPrefab(eUIType);
+
+            if (prefab == null)
+            {
+                Debug.LogWarning($"{eUIType} not found");
+                return;
+            }
+            instanceObject= Instantiate(prefab, mainCanvas.transform, true);
+            
+            ub = instanceObject.GetComponent<UIBase>();
+            
+            dicActivedUI.Add(eUIType, ub);
+        }
+
         Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(mainCamera, worldPos);
-
-        GameObject prefab = uiList.GetUIPrefab(eUIType);
-
-        if (prefab == null)
-        {
-            Debug.LogWarning($"{eUIType} not found");
-            return;
-        }
-
-        GameObject newInstance = Instantiate(prefab, mainCanvas.transform, true);
-
-        ub = newInstance.GetComponent<UIBase>();
-        dicActivedUI.Add(eUIType, ub);
         
-        RectTransform rectTransform = newInstance.transform as RectTransform;
+        RectTransform rectTransform = instanceObject.transform as RectTransform;
         if (rectTransform != null)
         {
             rectTransform.position = screenPos;
